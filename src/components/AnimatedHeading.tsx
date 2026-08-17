@@ -1,0 +1,61 @@
+import { useEffect, useState } from 'react'
+
+interface AnimatedHeadingProps {
+  text: string
+  className?: string
+  style?: React.CSSProperties
+  initialDelay?: number
+  charDelay?: number
+}
+
+export default function AnimatedHeading({
+  text,
+  className = '',
+  style = {},
+  initialDelay = 200,
+  charDelay = 30,
+}: AnimatedHeadingProps) {
+  const [animate, setAnimate] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setAnimate(true), initialDelay)
+    return () => clearTimeout(timer)
+  }, [initialDelay])
+
+  const lines = text.split('\n')
+
+  return (
+    <h1 className={className} style={style}>
+      {lines.map((line, lineIndex) => {
+        const chars = line.split('')
+        const lineOffset = lines
+          .slice(0, lineIndex)
+          .reduce((acc, l) => acc + l.length, 0)
+
+        return (
+          <span key={lineIndex} style={{ display: 'block' }}>
+            {chars.map((char, charIndex) => {
+              const globalIndex = lineOffset + charIndex
+              const delay = globalIndex * charDelay
+              const displayChar = char === ' ' ? '\u00A0' : char
+
+              return (
+                <span
+                  key={charIndex}
+                  style={{
+                    display: 'inline-block',
+                    opacity: animate ? 1 : 0,
+                    transform: animate ? 'translateX(0)' : 'translateX(-18px)',
+                    transition: `opacity 500ms ${delay}ms, transform 500ms ${delay}ms`,
+                  }}
+                >
+                  {displayChar}
+                </span>
+              )
+            })}
+          </span>
+        )
+      })}
+    </h1>
+  )
+}
