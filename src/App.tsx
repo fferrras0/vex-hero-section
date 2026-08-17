@@ -1,5 +1,11 @@
 import HeroSection from './components/HeroSection'
 
-export default function App() {
-  return <HeroSection />
+function App() {
+  return (
+    <div className="bg-black min-h-screen">
+      <HeroSection />
+    </div>
+  )
 }
+
+export default App

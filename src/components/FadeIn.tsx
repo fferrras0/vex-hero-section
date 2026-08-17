@@ -1,13 +1,13 @@
 import { useEffect, useState, ReactNode } from 'react'
 
 interface FadeInProps {
+  children: ReactNode
   delay?: number
   duration?: number
-  children: ReactNode
   className?: string
 }
 
-export default function FadeIn({ delay = 0, duration = 1000, children, className = '' }: FadeInProps) {
+export default function FadeIn({ children, delay = 0, duration = 1000, className = '' }: FadeInProps) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
